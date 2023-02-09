@@ -22,7 +22,7 @@ class Receive : public Observer {
     }
 };
 
-int main() {
+int main(int argc, char *argv[]) {
     PcapManager pcapManager(true, 1000, 2048);
 
     std::cout << "Devices: ";
@@ -46,7 +46,13 @@ int main() {
     pcapManager.setMonitorMode();
     pcapManager.pcapActivate();
     std::cout << "Radiotap header type: " << pcapManager.radiotapHeader() << std::endl;
-    pcapManager.setFilter("wlan host 84:f3:eb:a6:67:43");
+
+    std::string filter = "wlan host ";
+    std::cout << "Enter MAC address: ";
+    std::string mac;
+    std::cin >> mac;
+    filter += mac;
+    pcapManager.setFilter(filter.c_str());
 
     while (true) {
         pcapManager.nextPacket();
